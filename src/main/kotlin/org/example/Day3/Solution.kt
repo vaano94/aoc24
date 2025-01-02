@@ -69,6 +69,6 @@ data class MultiplicationParams(val x:Int, val y: Int)
 
 fun readInput() : String {
 
-    val lines = Files.readString(Paths.get("/Users/ivankravchenko/IdeaProjects/advent/src/main/kotlin/Day3/input.txt"))
+    val lines = Files.readString(Paths.get("src/main/kotlin/org/example/Day3/input.txt"))
     return lines
 }

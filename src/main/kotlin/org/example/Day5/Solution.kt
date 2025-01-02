@@ -113,12 +113,12 @@ fun arrangeInQueue(
 }
 
 fun readInputRules(): String {
-    val lines: String = Files.readString(Paths.get("/Users/ivankravchenko/IdeaProjects/advent/src/main/kotlin/Day5/input.txt"))
+    val lines: String = Files.readString(Paths.get("src/main/kotlin/org/example/Day5/input.txt"))
     return lines
 }
 
 fun readJournals(): String {
-    return Files.readString(Paths.get("/Users/ivankravchenko/IdeaProjects/advent/src/main/kotlin/Day5/journals.txt")).trim()
+    return Files.readString(Paths.get("src/main/kotlin/org/example/Day5/journals.txt")).trim()
 }
 
 

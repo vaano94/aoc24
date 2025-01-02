@@ -91,7 +91,7 @@ enum class Direction(val x: Int, val y: Int) {
 }
 
 fun readInput(): Array<Array<String>> {
-    val lines: MutableList<String> = Files.readAllLines(Paths.get("/Users/ivankravchenko/IdeaProjects/advent/src/main/kotlin/day4/input.txt"))
+    val lines: MutableList<String> = Files.readAllLines(Paths.get("src/main/kotlin/org/example/day4/input.txt"))
     return lines.map {
         it.map { c -> c.toString() }.toTypedArray()
     }.toTypedArray()

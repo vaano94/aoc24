@@ -63,7 +63,7 @@ enum class ConsistencySign {
 
 
 fun readInput() : List<List<Int>> {
-    val lines = Files.readAllLines(Paths.get("/Users/ivankravchenko/IdeaProjects/advent/src/main/kotlin/Day2/input.txt"))
+    val lines = Files.readAllLines(Paths.get("src/main/kotlin/org/example/Day2/input.txt"))
 
     return lines.map { s ->
         val split = s.split(" ")
