@@ -2,7 +2,6 @@ package org.example.Day8
 
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.concurrent.atomic.AtomicInteger
 
 fun main() {
 //    val input = """
@@ -30,7 +29,7 @@ fun main() {
 }
 
 fun placeAntinodes(antennaArray: Array<CharArray>) {
-    var antinodeSet = mutableSetOf<AntinodeLocation>()
+    val antinodeSet = mutableSetOf<AntinodeLocation>()
     val uniqueAntennaNodes = mutableListOf<AntennaLocation>()
 
     // collect all the possible combinations of letters
@@ -118,7 +117,7 @@ data class AntennaLocation(val name: Char, val x: Int, val y: Int)
 data class AntinodeLocation(val x: Int, val y: Int)
 
 fun readInput(): String {
-    val lines = Files.readString(Paths.get(object{}.javaClass.getResource("/Day8/input.txt").path)).trimIndent()
+    val lines = Files.readString(Paths.get(object{}.javaClass.getResource("/Day8/input.txt")?.path ?: "")).trimIndent()
     return lines
 }
 
