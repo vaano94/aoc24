@@ -205,6 +205,6 @@ val inputArea =
 """.trimIndent()
 
 fun readInput(): String {
-    val lines = Files.readString(Paths.get("src/main/kotlin/org/example/Day6/input.txt")).trimIndent()
+    val lines = Files.readString(Paths.get(object{}.javaClass.getResource("/Day6/input.txt").path)).trimIndent()
     return lines
 }

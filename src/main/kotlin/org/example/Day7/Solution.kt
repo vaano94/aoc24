@@ -187,6 +187,6 @@ fun printMatrix(matrix: Array<IntArray>) {
 }
 
 fun readInput(): String {
-    val lines = Files.readString(Paths.get("src/main/kotlin/org/example/Day7/input.txt")).trimIndent()
+    val lines = Files.readString(Paths.get(object{}.javaClass.getResource("/Day7/input.txt").path)).trimIndent()
     return lines
 }
