@@ -48,8 +48,7 @@ private fun officeLocationSimilarities(offices: IntArray, locations: IntArray) {
 }
 
 fun readInput() : Pair<IntArray, IntArray> {
-
-    val lines = Files.readAllLines(Paths.get("src/main/kotlin/org/example/Day1/input.txt"))
+    val lines = object{}.javaClass.getResourceAsStream("/Day1/input.txt").bufferedReader().readLines()
     val offices = IntArray(lines.size)
     val locations = IntArray(lines.size)
     lines.forEachIndexed { index, s ->
