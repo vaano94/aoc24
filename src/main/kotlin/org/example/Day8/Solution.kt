@@ -122,7 +122,9 @@ fun placeAntinodes(antennaArray: Array<CharArray>) {
     }
 
     // group nodes by letter
-    val groupedNodes = uniqueAntennaNodes.groupBy { it.name }.filter { it.value.size > 1 }
+    val groupedNodes: Map<Char, MutableList<AntennaLocation>> = uniqueAntennaNodes
+        .groupBy { it.name }
+        .entries.associate { it.key to it.value.toMutableList() }
 //    println(groupedNodes)
 
     // for each combination, place node on the map

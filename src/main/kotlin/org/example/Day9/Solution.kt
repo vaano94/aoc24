@@ -9,22 +9,99 @@ fun main() {
     val input = readInput().map { it.digitToInt() }.toTypedArray()
 //    val input: Array<Int> = "2333133121414131402".map { it.digitToInt() }.toTypedArray()
 
-
-    val toTypedArray: Array<Int?> =
-        "0099811188827773336446555566..............".map { if (it.isDigit()) it.digitToInt() else null }.toTypedArray()
-    val convertedString = toTypedArray;
-
-//    val customArray: Array<Int?> = arrayOf(0, null, 1, 2, 3)
-
-//    println(convertedString.toString())
-//
-//    println((calculateSum(convertedString)))
-
     val blockToLine = blockToLine(input)
 
-    val arrangedBlock = relocateFiles(blockToLine)
-    println(calculateSum(arrangedBlock))
+//    val arrangedBlock = relocateFiles(blockToLine)
+//    println(calculateSum(arrangedBlock))
 
+    val arrangedBlockSecondPart = relocateFilesPartTwo(blockToLine)
+    println(calculateSum(arrangedBlockSecondPart))
+    println(arrangedBlockSecondPart)
+
+}
+
+data class MovingBlock(val element:Int?, var endIndex: Int, val startIndex: Int)
+
+fun relocateFilesPartTwo(block: Array<Int?>):Array<Int?> {
+    var reassembledBlocks = block
+
+    var movingBlock: MovingBlock? = null
+    var lastMovedBlockElement: Int? = null
+
+    for (backwardIndex in block.lastIndex downTo 0) {
+//        println(reassembledBlocks.toList())
+        // Starting from beginning, find an EMPTY block of size equals or less
+        val backwardElement = block[backwardIndex]
+        if (backwardElement != null) {
+            // we met an element, continue gathering until meet next null
+            if (movingBlock != null && backwardElement == movingBlock.element) {
+                // we found the same element , add it as well
+                movingBlock.endIndex -= 1
+                continue
+            } else if (movingBlock != null && movingBlock.element != null) {
+                // it's a new element, we need to put the old one
+                if (lastMovedBlockElement != movingBlock.element) {
+                    forwardPlaceBlock(block, movingBlock)
+                }
+                lastMovedBlockElement = movingBlock.element
+                movingBlock = MovingBlock(element = backwardElement, startIndex = backwardIndex, endIndex = backwardIndex)
+                continue
+            } else if (movingBlock == null) {
+                // create a new one
+                movingBlock = MovingBlock(element = backwardElement, startIndex = backwardIndex, endIndex = backwardIndex)
+            }
+        } else {
+            if (movingBlock != null) {
+                if (lastMovedBlockElement != movingBlock.element) {
+                    forwardPlaceBlock(block, movingBlock)
+                }
+                lastMovedBlockElement = movingBlock.element
+            }
+        }
+    }
+    return reassembledBlocks
+}
+
+fun forwardPlaceBlock(block: Array<Int?>, movingBlock: MovingBlock) {
+//    println("Moving element: ${movingBlock}")
+    // find the first block that satisfies this size and that is not later that the lower bound of the movingBlock
+    val blockSize = if (movingBlock.endIndex == movingBlock.startIndex)
+        1
+        else (movingBlock.startIndex - movingBlock.endIndex) + 1
+    var nullFilledMovingBlock: MovingBlock? = null
+    for (forwardIndex in 0 ..< movingBlock.endIndex) {
+        if (block[forwardIndex] == null) {
+            // potentially found a candidate to replace, continue
+            if (nullFilledMovingBlock != null) {
+                if (forwardIndex - nullFilledMovingBlock.endIndex == 1) {
+                    nullFilledMovingBlock.endIndex += 1
+                } else {
+                    continue
+                }
+            } else {
+                nullFilledMovingBlock = MovingBlock(element = null, startIndex = forwardIndex, endIndex = forwardIndex)
+            }
+
+            // if length is OK, replace the element
+            val nullableBlockLength = (nullFilledMovingBlock.endIndex - nullFilledMovingBlock.startIndex + 1)
+            if (blockSize == nullableBlockLength) {
+                for (i in movingBlock.endIndex..movingBlock.startIndex) {
+                    block[i] = null
+//                    println(block.toList())
+                }
+                for (j in nullFilledMovingBlock.startIndex .. nullFilledMovingBlock.endIndex) {
+                    block[j] = movingBlock.element
+//                    println(block.toList())
+                }
+                return
+            }
+
+        } else {
+            nullFilledMovingBlock = null
+//            println(block.toList())
+            continue
+        }
+    }
 }
 
 fun relocateFiles(block: Array<Int?>): Array<Int?> {
