@@ -8,19 +8,32 @@ fun main() {
 
     val input = readInput()
 
+//    val input = """
+//        89010123
+//        78121874
+//        87430965
+//        96549874
+//        45678903
+//        32019012
+//        01329801
+//        10456732
+//    """.trimIndent()
+
     val inputAsArray = inputStringToArray(input)
     println(inputAsArray.printArray())
 
-    val trailHeadScore = findPaths(inputAsArray)
-    println("Trailhead score for the map: $trailHeadScore")
-    println("Scores of all trainHeads: ${trailHeadScore.values.sum()}")
+//    val trailHeadScore = findPaths(inputAsArray)
+//    println("Trailhead score for the map: $trailHeadScore")
+//    println("Scores of all trainHeads: ${trailHeadScore.values.sum()}")
+
+    val trailHeadScore2 = findPathsPart2(inputAsArray)
+    println("Trailhead score for the map: $trailHeadScore2")
+    println("Scores of all trainHeads: ${trailHeadScore2.values.sum()}")
 
 }
 
 fun findPaths(routeMap: Array<Array<Int?>>): MutableMap<MapPoint, Int> {
-
     val trailHeadToScore = mutableMapOf<MapPoint, Int>()
-
     for (i in routeMap.indices) {
         for (j in routeMap[i].indices) {
             val point = routeMap[i][j]
@@ -34,8 +47,40 @@ fun findPaths(routeMap: Array<Array<Int?>>): MutableMap<MapPoint, Int> {
             }
         }
     }
-
     return trailHeadToScore
+}
+
+fun findPathsPart2(routeMap: Array<Array<Int?>>): MutableMap<MapPoint, Int> {
+    val trailHeadToScore = mutableMapOf<MapPoint, Int>()
+    for (i in routeMap.indices) {
+        for (j in routeMap[i].indices) {
+            val point = routeMap[i][j]
+            if (point == 0) {
+                // start calculating the path
+                val startingMapPoint = MapPoint(i, j)
+                val foundPath = findPathPart2(startingMapPoint, routeMap)
+                if (foundPath != 0) {
+                    trailHeadToScore[startingMapPoint] = foundPath
+                }
+            }
+        }
+    }
+    return trailHeadToScore
+}
+
+fun findPathPart2(point: MapPoint, routeMap: Array<Array<Int?>>): Int {
+    var neighboursList = findNeighbours(point, routeMap).toList()
+
+    while (neighboursList.isNotEmpty()) {
+        val currentElement = routeMap[neighboursList.first().x][neighboursList.first().y]
+        if (currentElement == 9) {
+            // search completed
+            return neighboursList.size
+        }
+
+        neighboursList = neighboursList.map { p -> findNeighbours(p, routeMap) }.toList().flatten().toList()
+    }
+    return 0
 }
 
 fun findPath(point: MapPoint, routeMap: Array<Array<Int?>>): Int {
